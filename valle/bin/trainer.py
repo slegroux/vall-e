@@ -586,7 +586,8 @@ def train_one_epoch(
         batch_size = len(batch["text"])
 
         try:
-            with torch.cuda.amp.autocast(dtype=dtype, enabled=enabled):
+            # with torch.cuda.amp.autocast(dtype=dtype, enabled=enabled):
+            with torch.cuda.amp.autocast(enabled=enabled):
                 _, loss, loss_info = compute_loss(
                     params=params,
                     model=model,
@@ -720,7 +721,7 @@ def train_one_epoch(
 
         if params.batch_idx_train % params.valid_interval == 0:
             logging.info("Computing validation loss")
-            with torch.cuda.amp.autocast(dtype=dtype):
+            with torch.cuda.amp.autocast():#dtype=dtype):
                 valid_info = compute_validation_loss(
                     params=params,
                     model=model,
@@ -1000,7 +1001,7 @@ def scan_pessimistic_batches_for_oom(
     for criterion, cuts in batches.items():
         batch = train_dl.dataset[cuts]
         try:
-            with torch.cuda.amp.autocast(dtype=dtype):
+            with torch.cuda.amp.autocast():#dtype=dtype):
                 _, loss, _ = compute_loss(
                     params=params,
                     model=model,

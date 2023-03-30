@@ -68,11 +68,11 @@ class BigVGANFbank(FeatureExtractor):
         sampling_rate = 24000
         self.mel_basis = torch.from_numpy(
             librosa_mel_fn(
-                sampling_rate,
-                1024,
-                self.config.num_mel_bins,
-                self.config.low_freq,
-                self.config.high_freq,
+                sr=sampling_rate,
+                n_fft=1024,
+                n_mels=self.config.num_mel_bins,
+                fmin=self.config.low_freq,
+                fmax=sampling_rate/2.0,
             ).astype(np.float32)
         )
         self.hann_window = torch.hann_window(1024)
