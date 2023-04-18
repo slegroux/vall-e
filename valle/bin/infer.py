@@ -164,7 +164,7 @@ def main():
             audio_prompts.append(encoded_frames[0][0])
 
         assert len(args.text_prompts.split("|")) == len(audio_prompts)
-        audio_prompts = torch.concat(audio_prompts, dim=-1).transpose(2, 1)
+        audio_prompts = torch.cat(audio_prompts, dim=-1).transpose(2, 1)
         audio_prompts = audio_prompts.to(device)
 
     if os.path.isfile(args.text):  # for demos

@@ -17,8 +17,9 @@ stop_stage=3
 
 dl_dir=$PWD/download
 
-audio_extractor="Fbank"  # or Fbank
-audio_feats_dir=data/fbank
+audio_extractor="Encodec"  # or Fbank
+audio_feats_dir=data/tokenized
+
 
 . shared/parse_options.sh || exit 1
 
@@ -41,11 +42,11 @@ if [ $stage -le 0 ] && [ $stop_stage -ge 0 ]; then
   # If you have pre-downloaded it to /path/to/LJSpeech,
   # you can create a symlink
   #
-  #   ln -sfv /path/to/LJSpeech $dl_dir/LJSpeech
+  # ln -sfv /data/en/LJSpeech $dl_dir/LJSpeech
   #
-  if [ ! -d $dl_dir/LJSpeech-1.1 ];then
-    lhotse download ljspeech $dl_dir
-  fi
+  # if [ ! -d $dl_dir/LJSpeech-1.1 ];then
+  #   lhotse download ljspeech $dl_dir
+  # fi
 fi
 
 if [ $stage -le 1 ] && [ $stop_stage -ge 1 ]; then
