@@ -11,8 +11,8 @@ decoder_dim=1024
 nhead=16
 num_decoder_layers=12
 prefix_mode=1
-exp_dir=exp/valle
-epoch=39
+exp_dir=exp/valle-ext
+epoch=100
 
 python3 bin/infer.py --output-dir infer/demos \
     --model-name "VALL-E" --norm-first true --add-prenet false \
