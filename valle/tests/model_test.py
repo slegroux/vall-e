@@ -203,10 +203,10 @@ class TestModel(unittest.TestCase):
             assert zero.cpu().item() == 0.0, zero.cpu().item()
 
             half = metric_top1(
-                torch.concat(
+                torch.cat(
                     [smaller_logits.to(device), larger_logits.to(device)], dim=2
                 ),
-                torch.concat([targets, targets], dim=1),
+                torch.cat([targets, targets], dim=1),
             )
             assert half.cpu().item() == 0.5, half.cpu().item()
 

@@ -327,7 +327,7 @@ class VALLF(nn.Module):
                     y_emb += self.nar_audio_embeddings[j](
                         codes[:, prefix_len:, j]
                     )
-            y_emb = torch.concat([y_prompts, y_emb], axis=1)
+            y_emb = torch.cat([y_prompts, y_emb], axis=1)
         elif self.prefix_mode in [2, 4]:
             if self.prefix_mode == 2:
                 # random prefix
@@ -347,7 +347,7 @@ class VALLF(nn.Module):
                 )
                 if j < nar_stage:
                     y_emb += self.nar_audio_embeddings[j](codes[..., j])
-            y_emb = torch.concat([y_prompts, y_emb], axis=1)
+            y_emb = torch.cat([y_prompts, y_emb], axis=1)
 
             prefix_len = 0
         else:
@@ -580,7 +580,7 @@ class VALLF(nn.Module):
                 or (y.shape[1] - prefix_len) > x_lens.max() * 16
             ):
                 if prompts.shape[1] == y.shape[1]:
-                    y = torch.concat([y, samples], dim=1)
+                    y = torch.cat([y, samples], dim=1)
 
                 print(f"VALL-F EOS [{prefix_len} -> {y.shape[1]}]")
                 break
@@ -593,7 +593,7 @@ class VALLF(nn.Module):
         if self.prefix_mode in [2, 4]:  # Exclude enrolled_phonemes
             enrolled_len = enroll_x_lens.max().item()
             # SOS + Synthesis Text + EOS
-            text = torch.concat(
+            text = torch.cat(
                 [
                     text[:, :1],
                     text[:, enrolled_len - 1 :],
@@ -723,7 +723,7 @@ class VALLE(VALLF):
         # NOTE: x has been padded in TextTokenCollater
         x_mask = make_pad_mask(x_lens).to(x.device)
         y_mask = make_pad_mask(y_lens).to(y.device)
-        xy_padding_mask = torch.concat([x_mask, y_mask], dim=1)
+        xy_padding_mask = torch.cat([x_mask, y_mask], dim=1)
         y_mask_int = y_mask.type(torch.int64)
 
         text = x
@@ -762,7 +762,7 @@ class VALLE(VALLF):
                 (x_len, 0),
                 value=False,
             )
-            xy_attn_mask = torch.concat([x_attn_mask, y_attn_mask], dim=0)
+            xy_attn_mask = torch.cat([x_attn_mask, y_attn_mask], dim=0)
 
             # merge key padding and attention masks
             bsz, src_len = x.shape[0], x_len + y_len
@@ -781,7 +781,7 @@ class VALLE(VALLF):
             y_emb = self.ar_audio_prenet(y_emb)
             y_pos = self.ar_audio_position(y_emb)
 
-            xy_pos = torch.concat([x, y_pos], dim=1)
+            xy_pos = torch.cat([x, y_pos], dim=1)
 
             xy_dec, _ = self.ar_decoder(
                 (xy_pos, None),
@@ -816,7 +816,7 @@ class VALLE(VALLF):
 
             # VALL-E
             if self.prefix_mode in [2, 4]:
-                xy_padding_mask = torch.concat(
+                xy_padding_mask = torch.cat(
                     [
                         x_mask,
                         F.pad(y_mask, (y_emb.shape[1] - y_len, 0), value=False),
@@ -826,7 +826,7 @@ class VALLE(VALLF):
 
             y_pos = self.nar_audio_prenet(y_emb)
             y_pos = self.nar_audio_position(y_pos)
-            xy_pos = torch.concat([x, y_pos], dim=1)
+            xy_pos = torch.cat([x, y_pos], dim=1)
             xy_dec, _ = self.nar_decoder(
                 (xy_pos, self.nar_stage_embeddings[nar_stage - 1].weight),
                 src_key_padding_mask=xy_padding_mask,
@@ -917,7 +917,7 @@ class VALLE(VALLF):
             y_emb = self.ar_audio_embedding(y)
             y_emb = self.ar_audio_prenet(y_emb)
             y_pos = self.ar_audio_position(y_emb)
-            xy_pos = torch.concat([x, y_pos], dim=1)
+            xy_pos = torch.cat([x, y_pos], dim=1)
 
             y_len = y.shape[1]
             x_attn_mask_pad = F.pad(
@@ -965,7 +965,7 @@ class VALLE(VALLF):
         if self.prefix_mode in [2, 4]:  # Exclude enrolled_phonemes
             enrolled_len = enroll_x_lens.max().item()
             # SOS + Synthesis Text + EOS
-            text = torch.concat(
+            text = torch.cat(
                 [
                     text[:, :1],
                     text[:, enrolled_len - 1 :],
@@ -988,7 +988,7 @@ class VALLE(VALLF):
             ):
                 y_pos = self.nar_audio_prenet(y_emb)
                 y_pos = self.nar_audio_position(y_pos)
-                xy_pos = torch.concat([x, y_pos], dim=1)
+                xy_pos = torch.cat([x, y_pos], dim=1)
 
                 xy_dec, _ = self.nar_decoder(
                     (xy_pos, self.nar_stage_embeddings[i].weight)
@@ -1017,7 +1017,7 @@ class VALLE(VALLF):
             ):
                 y_pos = self.nar_audio_prenet(y_emb)
                 y_pos = self.nar_audio_position(y_pos)
-                xy_pos = torch.concat([x, y_pos], dim=1)
+                xy_pos = torch.cat([x, y_pos], dim=1)
 
                 xy_dec, _ = self.nar_decoder(
                     (xy_pos, self.nar_stage_embeddings[i].weight)
@@ -1088,7 +1088,7 @@ class VALLE(VALLF):
             ):
                 y_pos = self.nar_audio_position(y_emb)
                 y_pos = self.nar_audio_prenet(y_pos)
-                xy_pos = torch.concat([x, y_pos], dim=1)
+                xy_pos = torch.cat([x, y_pos], dim=1)
 
                 xy_dec, _ = self.nar_decoder(
                     (xy_pos, self.nar_stage_embeddings[i].weight)
@@ -1117,7 +1117,7 @@ class VALLE(VALLF):
             ):
                 y_pos = self.nar_audio_prenet(y_emb)
                 y_pos = self.nar_audio_position(y_pos)
-                xy_pos = torch.concat([x, y_pos], dim=1)
+                xy_pos = torch.cat([x, y_pos], dim=1)
 
                 xy_dec, _ = self.nar_decoder(
                     (xy_pos, self.nar_stage_embeddings[i].weight)

@@ -190,7 +190,7 @@ if __name__ == "__main__":
     MAX_WAV_VALUE = 32768.0
 
     sampling_rate, samples = read(
-        "egs/libritts/prompts/5639_40744_000000_000002.wav"
+        "egs/libritts/prompts/8455_210777_000067_000000.wav"
     )
     print(f"samples: [{samples.min()}, {samples.max()}]")
     fbank = extractor.extract(samples.astype(np.float32) / MAX_WAV_VALUE, 24000)
@@ -206,7 +206,7 @@ if __name__ == "__main__":
         interpolation="nearest",
     )
     plt.gca().invert_yaxis()
-    plt.savefig("egs/libritts/prompts/5639_40744_000000_000002.png")
+    plt.savefig("egs/libritts/prompts/8455_210777_000067_000000.png")
     plt.close()
 
     print("fbank test PASS!")
