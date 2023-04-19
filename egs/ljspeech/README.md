@@ -17,10 +17,7 @@ bash prepare.sh --stage -1 --stop-stage 3 \
   --audio_feats_dir data/tokenized
 ```
 
+## Training & Inference
+**LJSpeech is used to debug, Please try LibriTTS**
 
-## Training
-refer to [LibriTTS Training](../libritts/README.md#Training)
-
-
-## Inference
-refer to [LibriTTS Inference](../libritts/README.md#Inference)
+refer to [LibriTTS Training](../../README.md##Training&Inference)
