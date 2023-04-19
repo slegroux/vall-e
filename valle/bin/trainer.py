@@ -635,83 +635,6 @@ def train_one_epoch(
     elif params.dtype in ["float16", "fp16"]:
         dtype, enabled = torch.float16, True
 
-<<<<<<< HEAD
-    def evaluate():
-        logging.info("Computing validation loss")
-        with torch.cuda.amp.autocast(dtype=dtype):
-            valid_info = compute_validation_loss(
-                params=params,
-                model=model,
-                valid_dl=valid_dl,
-                world_size=world_size,
-            )
-        model.train()
-        logging.info(f"Epoch {params.cur_epoch}, validation: {valid_info}")
-        logging.info(
-            f"Maximum memory allocated so far is {torch.cuda.max_memory_allocated()//1000000}MB"
-        )
-
-        if tb_writer is not None:
-            valid_info.write_summary(
-                tb_writer, "train/valid_", params.batch_idx_train
-            )
-
-    batch_idx = 0
-    while True:
-        try:
-            batch = next(iter_dl)
-        except StopIteration:
-            logging.info("Reaches end of dataloader.")
-            if params.batch_idx_train % params.accumulate_grad_steps:
-                scaler.step(optimizer)
-                scaler.update()
-                optimizer.zero_grad()
-            break
-
-        batch_idx += 1
-
-        params.batch_idx_train += 1
-        batch_size = len(batch["text"])
-
-        try:
-            # with torch.cuda.amp.autocast(dtype=dtype, enabled=enabled):
-            with torch.cuda.amp.autocast(enabled=enabled):
-                _, loss, loss_info = compute_loss(
-                    params=params,
-                    model=model,
-                    batch=batch,
-                    is_training=True,
-                )
-            # summary stats
-            tot_loss = (tot_loss * (1 - 1 / params.reset_interval)) + loss_info
-
-            # NOTE: We use reduction==sum and loss is computed over utterances
-            # in the batch and there is no normalization to it so far.
-
-            scaler.scale(loss).backward()
-            if params.batch_idx_train >= params.accumulate_grad_steps:
-                if params.batch_idx_train % params.accumulate_grad_steps == 0:
-                    if params.optimizer_name not in ["ScaledAdam", "Eve"]:
-                        # Unscales the gradients of optimizer's assigned params in-place
-                        scaler.unscale_(optimizer)
-                        # Since the gradients of optimizer's assigned params are unscaled, clips as usual:
-                        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-
-                    scaler.step(optimizer)
-                    scaler.update()
-                    optimizer.zero_grad()
-
-                    for k in range(params.accumulate_grad_steps):
-                        if isinstance(scheduler, Eden):
-                            scheduler.step_batch(params.batch_idx_train)
-                        else:
-                            scheduler.step()
-
-            set_batch_count(model, params.batch_idx_train)
-        except:  # noqa
-            display_and_save_batch(batch, params=params)
-            raise
-=======
     model_context = model.join if isinstance(model, DDP) else nullcontext
     with model_context():
         batch_idx = 0
@@ -783,7 +706,6 @@ def train_one_epoch(
                         model_cur=model,
                         model_avg=model_avg,
                     )
->>>>>>> upstream/main
 
             if (
                 params.batch_idx_train > 0
