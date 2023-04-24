@@ -27,7 +27,7 @@ average_period=0
 
 # EPOCHS
 num_epochs=250
-start_epoch=40
+start_epoch=1
 start_batch=0
 accumulate_grad_steps=4
 
@@ -47,8 +47,8 @@ python3 bin/trainer.py \
     --base-lr ${base_lr} --warmup-steps ${warmup_steps} --average-period ${average_period} \
     --max-duration ${max_duration} --filter-max-duration ${filter_max_duration} --filter-min-duration ${filter_min_duration} \
     --exp-dir ${exp_dir} \
-    --world-size 8 \
-    --drop-last true
+    --world-size 8 
+    # --drop-last true
 
 # python bin/trainer.py --max-duration 30 --filter-min-duration 0.5 --filter-max-duration 14 \
 #     --model-name "VALL-E" --norm-first true --add-prenet false --dtype "float32" \
