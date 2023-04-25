@@ -37,7 +37,7 @@ filter_max_duration=14
 filter_min_duration=0.5
 
 # PATHS
-exp_dir=exp/valle
+exp_dir=exp/valle_1gpu
   
 python3 bin/trainer.py \
     --num-buckets 6 --dtype "float32" --save-every-n 10000 \
@@ -46,8 +46,8 @@ python3 bin/trainer.py \
     --model-name valle --share-embedding true --norm-first true --add-prenet false \
     --base-lr ${base_lr} --warmup-steps ${warmup_steps} --average-period ${average_period} \
     --max-duration ${max_duration} --filter-max-duration ${filter_max_duration} --filter-min-duration ${filter_min_duration} \
-    --exp-dir ${exp_dir} \
-    --world-size 8 
+    --exp-dir ${exp_dir}
+    # --world-size 8 
     # --drop-last true
 
 # python bin/trainer.py --max-duration 30 --filter-min-duration 0.5 --filter-max-duration 14 \

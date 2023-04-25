@@ -120,6 +120,12 @@ def get_args():
         help="Do continual task.",
     )
 
+    parser.add_argument(
+        "--cuda",
+        type=int,
+        default=0,
+        help="Do inference on specific GPU"
+    )
     return parser.parse_args()
 
 
@@ -132,7 +138,7 @@ def main():
 
     device = torch.device("cpu")
     if torch.cuda.is_available():
-        device = torch.device("cuda", 0)
+        device = torch.device("cuda", args.cuda)
 
     model = get_model(args)
     if args.checkpoint:

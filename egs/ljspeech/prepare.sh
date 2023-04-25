@@ -5,7 +5,7 @@ set -eou pipefail
 # fix segmentation fault reported in https://github.com/k2-fsa/icefall/issues/674
 export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 
-nj=16
+nj=112
 stage=-1
 stop_stage=3
 
@@ -15,7 +15,8 @@ stop_stage=3
 #
 #  - $dl_dir/LJSpeech-1.1
 
-dl_dir=$PWD/download
+# dl_dir=$PWD/download
+dl_dir=/data/en/LJSpeech
 
 audio_extractor="Encodec"  # or Fbank
 audio_feats_dir=data/tokenized
