@@ -11,7 +11,7 @@ warmup_steps=200
 average_period=0
 
 # EPOCHS
-num_epochs=500
+num_epochs=1000
 start_epoch=240
 start_batch=0
 accumulate_grad_steps=1
