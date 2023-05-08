@@ -12,7 +12,7 @@ nhead=16
 num_decoder_layers=12
 prefix_mode=1
 exp_dir=exp/valle_1gpu
-epoch=67
+epoch=72
 
 python3 bin/infer.py --output-dir infer/demos \
     --model-name "VALL-E" --norm-first true --add-prenet false \
@@ -20,7 +20,7 @@ python3 bin/infer.py --output-dir infer/demos \
     --text-prompts "KNOT one point one five miles per hour." \
     --audio-prompts ./prompts/8463_294825_000043_000000.wav \
     --text "To get up and running quickly just follow the steps below." \
-    --checkpoint=${exp_dir}/batch-17fc695a-07a0-ca6e-0822-e8f36c031199.pt
-    # --checkpoint=${exp_dir}/epoch-${epoch}.pt
+    --checkpoint=${exp_dir}/epoch-${epoch}.pt
+    # --checkpoint=${exp_dir}/batch-17fc695a-07a0-ca6e-0822-e8f36c031199.pt
     # --checkpoint=exp/valle_nano/best-train-loss.pt
 

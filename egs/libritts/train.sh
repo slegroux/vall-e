@@ -26,28 +26,29 @@ warmup_steps=200
 average_period=0
 
 # EPOCHS
-num_epochs=250
+num_epochs=2500
 start_epoch=1
 start_batch=0
 accumulate_grad_steps=4
 
 # DATA FILTERING
-max_duration=30
+max_duration=32
 filter_max_duration=14
 filter_min_duration=0.5
+world_size=1
 
 # PATHS
-exp_dir=exp/valle_1gpu
+exp_dir=exp/valle_${world_size}gpu
   
 python3 bin/trainer.py \
-    --num-buckets 6 --dtype "float32" --save-every-n 10000 \
-    --num-epochs ${num_epochs} --start-epoch ${start_epoch} --start-batch ${start_batch} --accumulate-grad-steps ${accumulate_grad_steps} \
-    --decoder-dim ${decoder_dim} --nhead ${nhead} --num-decoder-layers ${num_decoder_layers} --prefix-mode 1 \
-    --model-name valle --share-embedding true --norm-first true --add-prenet false \
-    --base-lr ${base_lr} --warmup-steps ${warmup_steps} --average-period ${average_period} \
     --max-duration ${max_duration} --filter-max-duration ${filter_max_duration} --filter-min-duration ${filter_min_duration} \
-    --exp-dir ${exp_dir}
-    # --world-size 8 
+    --num-buckets 6 --dtype "float32" --save-every-n 10000 \
+    --model-name valle --share-embedding true --norm-first true --add-prenet false \
+    --decoder-dim ${decoder_dim} --nhead ${nhead} --num-decoder-layers ${num_decoder_layers} --prefix-mode 1 \
+    --base-lr ${base_lr} --warmup-steps ${warmup_steps} --average-period ${average_period} \
+    --num-epochs ${num_epochs} --start-epoch ${start_epoch} --start-batch ${start_batch} --accumulate-grad-steps ${accumulate_grad_steps} \
+    --exp-dir ${exp_dir} \
+    --world-size ${world_size}
     # --drop-last true
 
 # python bin/trainer.py --max-duration 30 --filter-min-duration 0.5 --filter-max-duration 14 \

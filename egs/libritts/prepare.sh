@@ -19,8 +19,8 @@ stop_stage=3
 
 dl_dir=$PWD/download
 
-# dataset_parts="-p dev-clean -p test-clean"  # debug
-dataset_parts="--dataset-parts all"  # all
+dataset_parts="-p dev-clean -p test-clean"  # debug
+# dataset_parts="--dataset-parts all"  # all
 
 audio_extractor="Encodec"  # or Fbank
 audio_feats_dir=data/tokenized
