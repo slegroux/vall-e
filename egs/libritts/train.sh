@@ -39,10 +39,28 @@ world_size=1
 
 # PATHS
 exp_dir=exp/valle_${world_size}gpu
-  
+
+# ALL
+train_stage=0
+
+# AR
+train_stage=1
+max_duration=80
+num_epochs=3
+exp_dir=exp/valle_ar_nar_${world_size}gpu
+
+# NAR
+train_stage=2
+max_duration=40
+num_epochs=40
+exp_dir=exp/valle_ar_nar_${world_size}gpu
+start_epoch=4
+
+
 python3 bin/trainer.py \
+    --train-stage ${train_stage} \
     --max-duration ${max_duration} --filter-max-duration ${filter_max_duration} --filter-min-duration ${filter_min_duration} \
-    --num-buckets 6 --dtype "float32" --save-every-n 10000 \
+    --num-buckets 6 --dtype "float32" --save-every-n 10000 --valid-interval 20000 \
     --model-name valle --share-embedding true --norm-first true --add-prenet false \
     --decoder-dim ${decoder_dim} --nhead ${nhead} --num-decoder-layers ${num_decoder_layers} --prefix-mode 1 \
     --base-lr ${base_lr} --warmup-steps ${warmup_steps} --average-period ${average_period} \
@@ -50,12 +68,3 @@ python3 bin/trainer.py \
     --exp-dir ${exp_dir} \
     --world-size ${world_size}
     # --drop-last true
-
-# python bin/trainer.py --max-duration 30 --filter-min-duration 0.5 --filter-max-duration 14 \
-#     --model-name "VALL-E" --norm-first true --add-prenet false --dtype "float32" \
-#     --decoder-dim 1024 --nhead 16 --num-decoder-layers 12 --prefix-mode 1 \
-#     --base-lr 0.05 --warmup-steps 200 --average-period 0 --accumulate-grad-steps 1 \
-#     --num-epochs 40 --start-epoch 1 --start-batch 0 \
-#     --exp-dir exp/valle \
-#     --world-size 8 \
-#     --drop-last true
