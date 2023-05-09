@@ -46,21 +46,21 @@ train_stage=0
 # AR
 train_stage=1
 max_duration=80
-num_epochs=3
+num_epochs=500
 exp_dir=exp/valle_ar_nar_${world_size}gpu
 
 # NAR
 train_stage=2
 max_duration=40
-num_epochs=40
+num_epochs=1000
 exp_dir=exp/valle_ar_nar_${world_size}gpu
-start_epoch=4
+start_epoch=40
 
 
 python3 bin/trainer.py \
     --train-stage ${train_stage} \
     --max-duration ${max_duration} --filter-max-duration ${filter_max_duration} --filter-min-duration ${filter_min_duration} \
-    --num-buckets 6 --dtype "float32" --save-every-n 10000 --valid-interval 20000 \
+    --num-buckets 6 --dtype "float32" --save-every-n 10000 --valid-interval 10000 \
     --model-name valle --share-embedding true --norm-first true --add-prenet false \
     --decoder-dim ${decoder_dim} --nhead ${nhead} --num-decoder-layers ${num_decoder_layers} --prefix-mode 1 \
     --base-lr ${base_lr} --warmup-steps ${warmup_steps} --average-period ${average_period} \
