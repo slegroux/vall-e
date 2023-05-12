@@ -50,11 +50,12 @@ num_epochs=500
 exp_dir=exp/valle_ar_nar_${world_size}gpu
 
 # NAR
-train_stage=2
+train_stage=0
 max_duration=40
 num_epochs=1000
-exp_dir=exp/valle_ar_nar_${world_size}gpu
-start_epoch=40
+# exp_dir=exp/valle_ar_nar_${world_size}gpu
+exp_dir=exp/max_dur-40_gpu-${world_size}
+start_epoch=1
 
 
 python3 bin/trainer.py \
