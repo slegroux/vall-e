@@ -11,8 +11,9 @@ decoder_dim=1024
 nhead=16
 num_decoder_layers=12
 prefix_mode=1
-exp_dir=exp/valle_ar_nar_1gpu
-epoch=304
+# exp_dir=exp/valle_ar_nar_1gpu
+exp_dir=exp/max_dur-40_gpu-1
+epoch=463
 
 python3 bin/infer.py --output-dir ${exp_dir}/output \
     --cuda 0 \
@@ -20,8 +21,8 @@ python3 bin/infer.py --output-dir ${exp_dir}/output \
     --decoder-dim ${decoder_dim} --nhead ${nhead} --num-decoder-layers ${num_decoder_layers} --prefix-mode ${prefix_mode} \
     --text-prompts "KNOT one point one five miles per hour." \
     --audio-prompts ./prompts/8463_294825_000043_000000.wav \
-    --text "this is the multi-speaker version." \
-    --checkpoint=${exp_dir}/best-train-loss.pt
+    --text "This is an example" \
+    --checkpoint=${exp_dir}/epoch-${epoch}.pt #best-valid-loss.pt
     # epoch-${epoch}.pt #best-valid-loss.pt #best-train-loss.pt
     # --checkpoint=${exp_dir}/batch-17fc695a-07a0-ca6e-0822-e8f36c031199.pt
     # --checkpoint=exp/valle_nano/best-train-loss.pt
