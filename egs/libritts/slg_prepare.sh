@@ -6,7 +6,7 @@ set -x
 # fix segmentation fault reported in https://github.com/k2-fsa/icefall/issues/674
 export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 
-nj=110
+nj=100
 stage=-1
 stop_stage=5
 
@@ -20,9 +20,10 @@ stop_stage=5
 
 dl_dir=$PWD/download
 
-dataset_parts="-p dev-clean -p test-clean"  # debug
+# dataset_parts="-p dev-clean -p test-clean"  # debug
 # dataset_parts="test-clean"
-# dataset_parts="--dataset-parts all"  # all
+dataset_parts="--dataset-parts all"  # all
+# dataset_parts="-p dev-clean -p dev-other -p test-clean -p train-clean-100 -p train-clean-360"
 
 . shared/parse_options.sh || exit 1
 
@@ -84,9 +85,8 @@ if [ $stage -le 3 ] && [ $stop_stage -ge 3 ]; then
       lhotse combine \
         data/tokenized/libritts_cuts_train-clean-100.jsonl.gz \
         data/tokenized/libritts_cuts_train-clean-360.jsonl.gz \
-        data/tokenized/libritts_cuts_train-other-500.jsonl.gz \
         data/tokenized/cuts_train.jsonl.gz
-
+      # data/tokenized/libritts_cuts_train-other-500.jsonl.gz \
       # dev
       lhotse copy \
         data/tokenized/libritts_cuts_dev-clean.jsonl.gz \
@@ -113,25 +113,25 @@ fi
 
 # exit 0
 
-if [ $stage -le 4 ] && [ $stop_stage -ge 4 ]; then
-  log "Stage 4: Train LibriTTS"
+# if [ $stage -le 4 ] && [ $stop_stage -ge 4 ]; then
+#   log "Stage 4: Train LibriTTS"
 
-  # nano
-  # python3 bin/trainer.py \
-  #   --decoder-dim 128 --nhead 4 --num-decoder-layers 4 \
-  #   --exp-dir exp/valle_nano
-  #   --world-size 8 \
-  # export OMP_NUM_THREADS=1
-  export CUDA_VISIBLE_DEVICES="0,1,2,3,4,5,6,7"
+#   # nano
+#   # python3 bin/trainer.py \
+#   #   --decoder-dim 128 --nhead 4 --num-decoder-layers 4 \
+#   #   --exp-dir exp/valle_nano
+#   #   --world-size 8 \
+#   # export OMP_NUM_THREADS=1
+#   export CUDA_VISIBLE_DEVICES="0,1,2,3,4,5,6,7"
   
-  python3 bin/trainer.py \
-    --decoder-dim 128 --nhead 4 --num-decoder-layers 4 \
-    --max-duration 40 --model-name valle \
-    --exp-dir exp/valle_nano \
-    --world-size 8
+#   python3 bin/trainer.py \
+#     --decoder-dim 128 --nhead 4 --num-decoder-layers 4 \
+#     --max-duration 40 --model-name valle \
+#     --exp-dir exp/valle_nano \
+#     --world-size 8
 
-  # same as paper
-  # python3 bin/trainer.py \
-  #   --decoder-dim 1024 --nhead 16 --num-decoder-layers 12 \
-  #   --exp-dir exp/valle
-fi
+#   # same as paper
+#   # python3 bin/trainer.py \
+#   #   --decoder-dim 1024 --nhead 16 --num-decoder-layers 12 \
+#   #   --exp-dir exp/valle
+# fi

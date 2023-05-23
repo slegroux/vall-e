@@ -35,7 +35,6 @@ accumulate_grad_steps=4
 max_duration=32
 filter_max_duration=14
 filter_min_duration=0.5
-world_size=1
 
 # PATHS
 exp_dir=exp/valle_${world_size}gpu
@@ -53,8 +52,10 @@ exp_dir=exp/valle_ar_nar_${world_size}gpu
 train_stage=0
 max_duration=40
 num_epochs=1000
+world_size=8
 # exp_dir=exp/valle_ar_nar_${world_size}gpu
-exp_dir=exp/max_dur-40_gpu-${world_size}
+name=libritts460
+exp_dir=exp/${name}-decoder_dim${decoder_dim}-nhead${nhead}-nlayers${num_decoder_layers}-max_dur${max_duration}-lr${base_lr}-warmup${warmup_steps}-world_size_${world_size}
 start_epoch=1
 
 
